@@ -1,0 +1,15 @@
+[SddmGreeterTheme]
+Name=DZNLinux
+Description=DZNLinux SDDM theme for KDE Plasma
+Author=Seth Dawson
+License=GPL-3.0-or-later
+Type=sddm-theme
+Version=1.0.0
+Website=https://github.com/DZN-Linux/dznlinux-sddm-theme-plasma
+Screenshot=Preview.png
+MainScript=Main.qml
+ConfigFile=theme.conf
+TranslationsDirectory=translations
+Email=dznlinux@gmail.com
+Theme-Id=dznlinux-sddm-theme
+Theme-API=2.0
