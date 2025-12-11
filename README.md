@@ -20,16 +20,33 @@ A custom SDDM (Simple Desktop Display Manager) theme for DZN Linux, designed for
 
 ## Installation
 
-### From AUR (Recommended)
+### From DZN Linux Repository (Recommended)
+
+First, add the DZN Linux repository to your system:
 
 ```bash
-# Using an AUR helper (e.g., yay, paru)
-yay -S dznlinux-sddm-theme-plasma-git
+# Add the PGP key
+sudo pacman-key --recv-key BB31837564255477
+sudo pacman-key --lsign-key BB31837564255477
+```
 
-# Or build manually with makepkg
-git clone https://aur.archlinux.org/dznlinux-sddm-theme-plasma-git.git
-cd dznlinux-sddm-theme-plasma-git
-makepkg -si
+Add the following to `/etc/pacman.conf`:
+
+```ini
+[dznlinux_repo]
+SigLevel = Required DatabaseOptional
+Server = https://repo.dozzen.me/archlinux/$repo/$arch
+
+[dznlinux_repo_3party]
+SigLevel = Required DatabaseOptional
+Server = https://repo.dozzen.me/archlinux/$repo/$arch
+```
+
+Then install the package:
+
+```bash
+sudo pacman -Sy
+sudo pacman -S dznlinux-sddm-theme-plasma-git
 ```
 
 ### Manual Installation
