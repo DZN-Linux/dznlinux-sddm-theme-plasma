@@ -175,8 +175,8 @@ PlasmaCore.ColorScope {
             userListCurrentIndex: userModel.lastIndex >= 0 ? userModel.lastIndex : 0
             lastUserName: userModel.lastUser
             
-            usernameFontSize: root.generalFontSize
-            usernameFontColor: root.generalFontColor
+            usernameFontSize: config.fontSize
+            usernameFontColor: root.textColor
 
             showUserList: {
                 if ( !userListModel.hasOwnProperty("count")
@@ -202,28 +202,28 @@ PlasmaCore.ColorScope {
 
                 actionItems: [
                     ActionButton {
-                        iconSource: "/usr/share/sddm/themes/McMojave/assets/suspend_primary.svgz"
+                        iconSource: "assets/suspend_primary.svgz"
                         text: i18ndc("plasma_lookandfeel_org.kde.lookandfeel","Suspend to RAM","Sleep")
                         onClicked: sddm.suspend()
                         enabled: sddm.canSuspend
                         visible: !inputPanel.keyboardActive
                     },
                     ActionButton {
-                        iconSource: "/usr/share/sddm/themes/McMojave/assets/restart_primary.svgz"
+                        iconSource: "assets/restart_primary.svgz"
                         text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Restart")
                         onClicked: sddm.reboot()
                         enabled: sddm.canReboot
                         visible: !inputPanel.keyboardActive
                     },
                     ActionButton {
-                        iconSource: "/usr/share/sddm/themes/McMojave/assets/shutdown_primary.svgz"
+                        iconSource: "assets/shutdown_primary.svgz"
                         text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Shut Down")
                         onClicked: sddm.powerOff()
                         enabled: sddm.canPowerOff
                         visible: !inputPanel.keyboardActive
                     },
                     ActionButton {
-                        iconSource: "/usr/share/sddm/themes/McMojave/assets/switch_primary.svgz"
+                        iconSource: "assets/switch_primary.svgz"
                         text: i18ndc("plasma_lookandfeel_org.kde.lookandfeel", "For switching to a username and password prompt", "Other...")
                         onClicked: mainStack.push(userPromptComponent)
                         enabled: true
@@ -381,28 +381,28 @@ PlasmaCore.ColorScope {
 
                 actionItems: [
                     ActionButton {
-                        iconSource: "/usr/share/sddm/themes/McMojave/assets/suspend_primary.svgz"
+                        iconSource: "assets/suspend_primary.svgz"
                         text: i18ndc("plasma_lookandfeel_org.kde.lookandfeel","Suspend to RAM","Sleep")
                         onClicked: sddm.suspend()
                         enabled: sddm.canSuspend
                         visible: !inputPanel.keyboardActive
                     },
                     ActionButton {
-                        iconSource: "/usr/share/sddm/themes/McMojave/assets/restart_primary.svgz"
+                        iconSource: "assets/restart_primary.svgz"
                         text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Restart")
                         onClicked: sddm.reboot()
                         enabled: sddm.canReboot
                         visible: !inputPanel.keyboardActive
                     },
                     ActionButton {
-                        iconSource: "/usr/share/sddm/themes/McMojave/assets/shutdown_primary.svgz"
+                        iconSource: "assets/shutdown_primary.svgz"
                         text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Shut Down")
                         onClicked: sddm.powerOff()
                         enabled: sddm.canPowerOff
                         visible: !inputPanel.keyboardActive
                     },
                     ActionButton {
-                        iconSource: "/usr/share/sddm/themes/McMojave/assets/switch_primary.svgz"
+                        iconSource: "assets/switch_primary.svgz"
                         text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","List Users")
                         onClicked: mainStack.pop()
                         visible: !inputPanel.keyboardActive
