@@ -1,5 +1,7 @@
 # DZNLinux SDDM Theme
 
+![DZNLinux SDDM Theme Preview](sddm-dznlinux-theme.png)
+
 A custom SDDM (Simple Desktop Display Manager) theme for DZN Linux, designed for KDE Plasma with a clean, modern interface.
 
 ## Features
