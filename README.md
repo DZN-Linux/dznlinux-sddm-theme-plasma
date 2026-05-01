@@ -9,7 +9,7 @@ A custom SDDM (Simple Desktop Display Manager) theme for DZN Linux, designed for
 - Clean and modern login interface
 - Custom DZN Linux branding and colors
 - Seamless integration with KDE Plasma themes
-- Compatible with Qt 5-based SDDM
+- Compatible with Qt6-based SDDM 0.21+
 - Session selection (Plasma, Hyprland, or any installed desktop/window manager)
 - Keyboard layout switching
 - System actions (shutdown, reboot, suspend)
@@ -18,7 +18,7 @@ A custom SDDM (Simple Desktop Display Manager) theme for DZN Linux, designed for
 
 - **Desktop Environments**: Works with any desktop environment or window manager (Plasma 6, Hyprland, etc.)
 - **Display Manager**: Requires SDDM
-- **Qt Version**: Compatible with Qt 5-based SDDM (standard on most distributions)
+- **Qt Version**: Requires Qt6-based SDDM 0.21+ (KDE Plasma 6)
 
 ## Installation
 
@@ -62,7 +62,7 @@ cd dznlinux-sddm-theme-plasma
 sudo cp -r usr/share/sddm/themes/dznlinux-sddm-theme /usr/share/sddm/themes/
 
 # Optional: Copy default SDDM configuration
-sudo cp etc/sddm.conf.d/dznlinux-theme.conf /etc/sddm.conf.d/
+sudo cp etc/sddm.conf.d/kde_settings.conf /etc/sddm.conf.d/
 ```
 
 ## Configuration
@@ -74,7 +74,7 @@ To activate the theme, edit `/etc/sddm.conf` or create `/etc/sddm.conf.d/theme.c
 Current=dznlinux-sddm-theme
 ```
 
-Alternatively, if you installed the package, the configuration is automatically set in `/etc/sddm.conf.d/dznlinux-theme.conf`.
+Alternatively, if you installed the package, the configuration is automatically set in `/etc/sddm.conf.d/kde_settings.conf`.
 
 ## Customization
 
@@ -105,14 +105,29 @@ usr/share/sddm/themes/dznlinux-sddm-theme/
 ├── Login.qml             # Login form component
 ├── Background.qml        # Background handler
 ├── KeyboardButton.qml    # Keyboard layout switcher
+├── SessionButton.qml     # Session selection button
 ├── BreezeMenuStyle.qml   # Menu styling
 ├── metadata.desktop      # Theme metadata
 ├── theme.conf            # Theme configuration
 ├── background.jpg        # Default background image
 ├── Preview.png           # Theme preview
 ├── components/           # Reusable QML components
-│   └── UserList.qml
-├── assets/               # Theme assets (icons, etc.)
+│   ├── ActionButton.qml
+│   ├── Battery.qml
+│   ├── Clock.qml
+│   ├── KeyboardLayoutButton.qml
+│   ├── SessionManagementScreen.qml
+│   ├── UserDelegate.qml
+│   ├── UserList.qml
+│   ├── VirtualKeyboard.qml
+│   └── WallpaperFader.qml
+├── assets/               # Theme assets (SVG icons)
+│   ├── login.svgz
+│   ├── logout_primary.svgz
+│   ├── restart_primary.svgz
+│   ├── shutdown_primary.svgz
+│   ├── suspend_primary.svgz
+│   └── switch_primary.svgz
 └── faces/                # User avatar icons
 ```
 
