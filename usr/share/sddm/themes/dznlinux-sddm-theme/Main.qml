@@ -17,9 +17,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import QtQuick 2.15
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.15 as QQC2
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls as QQC2
 import Qt5Compat.GraphicalEffects
 
 import org.kde.plasma.components as PlasmaComponents
@@ -71,7 +71,7 @@ Item {
         anchors.fill: parent
 
         property bool uiVisible: true
-        property bool blockUI: mainStack.depth > 1 || userListComponent.mainPasswordBox.text.length > 0 || inputPanel.keyboardActive || config.type !== "image"
+        property bool blockUI: mainStack.depth > 1 || (userListComponent && userListComponent.mainPasswordBox && userListComponent.mainPasswordBox.text.length > 0) || inputPanel.keyboardActive || config.type !== "image"
 
         hoverEnabled: true
         drag.filterChildren: true
@@ -93,7 +93,7 @@ Item {
             }
         }
 
-        Keys.onPressed: {
+        Keys.onPressed: (event) => {
             uiVisible = true;
             event.accepted = false;
         }
@@ -174,7 +174,7 @@ Item {
             userListCurrentIndex: userModel.lastIndex >= 0 ? userModel.lastIndex : 0
             lastUserName: userModel.lastUser
 
-            usernameFontSize: config.fontSize
+            usernameFontSize: (config.fontSize && config.fontSize > 0) ? config.fontSize : 10
             usernameFontColor: Kirigami.Theme.textColor
 
             showUserList: {
@@ -229,7 +229,7 @@ Item {
                         visible: !userListComponent.showUsernamePrompt && !inputPanel.keyboardActive
                     }]
 
-                onLoginRequest: {
+                onLoginRequest: (username, password) => {
                     root.notificationMessage = ""
                     sddm.login(username, password, sessionButton.currentIndex)
                 }

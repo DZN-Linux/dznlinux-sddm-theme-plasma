@@ -15,7 +15,7 @@ SessionManagementScreen {
     property bool passwordFieldOutlined: config.PasswordFieldOutlined == "true"
     property bool hidePasswordRevealIcon: config.HidePasswordRevealIcon == "false"
     property int visibleBoundary: mapFromItem(passwordRow, 0, 0).y
-    onHeightChanged: visibleBoundary = mapFromItem(passwordRow, 0, 0).y + passwordRow.height + Kirigami.Units.smallSpacing
+    onHeightChanged: visibleBoundary = mapFromItem(passwordRow, 0, 0).y + passwordRow.height + (Kirigami.Units ? Kirigami.Units.smallSpacing : 8)
 
     // Exposed so Main.qml can check if the password field has text (for blockUI)
     property alias mainPasswordBox: passwordBox
@@ -41,7 +41,7 @@ SessionManagementScreen {
         Layout.fillWidth: true
         Layout.minimumHeight: 32
         implicitHeight: root.height / 28
-        font.family: config.Font || "Noto Sans"
+        font.family: config.Font ? config.Font : "Noto Sans"
         font.pointSize: usernameFontSize
         opacity: 0.5
         text: lastUserName
@@ -68,11 +68,11 @@ SessionManagementScreen {
             implicitHeight: usernameFontSize * 2.85
             font.pointSize: usernameFontSize * 0.8
             opacity: passwordFieldOutlined ? 1.0 : 0.5
-            font.family: config.Font || "Noto Sans"
-            placeholderText: config.PasswordFieldPlaceholderText || i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Password")
+            font.family: config.Font ? config.Font : "Noto Sans"
+            placeholderText: config.PasswordFieldPlaceholderText ? config.PasswordFieldPlaceholderText : i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Password")
             focus: !showUsernamePrompt || lastUserName
             echoMode: TextInput.Password
-            passwordCharacter: config.PasswordFieldCharacter || "●"
+            passwordCharacter: config.PasswordFieldCharacter ? config.PasswordFieldCharacter : "●"
             onAccepted: startLogin()
             color: passwordFieldOutlined ? "white" : "black"
             background: Rectangle {
@@ -86,7 +86,7 @@ SessionManagementScreen {
                 mainStack.currentItem.forceActiveFocus();
             }
 
-            Keys.onPressed: function(event) {
+            Keys.onPressed: (event) => {
                 if (event.key == Qt.Key_Left && !text) {
                     userList.decrementCurrentIndex();
                     event.accepted = true
@@ -97,7 +97,7 @@ SessionManagementScreen {
                 }
             }
 
-            Keys.onReleased: function(event) {
+            Keys.onReleased: (event) => {
                 if (loginButton.opacity == 0 && length > 0) {
                     showLoginButton.start()
                 }

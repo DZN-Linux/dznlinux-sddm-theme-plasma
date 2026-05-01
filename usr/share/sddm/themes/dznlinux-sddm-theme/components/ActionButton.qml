@@ -17,14 +17,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import QtQuick 2.15
-import org.kde.plasma.components 3.0 as PlasmaComponents
-import org.kde.kirigami 2.20 as Kirigami
+import QtQuick
+import org.kde.plasma.components as PlasmaComponents
+import org.kde.kirigami as Kirigami
 
 Item {
     id: root
     property alias text: label.text
-    property alias iconSource: icon.source
+    property string iconSource: ""
     property alias containsMouse: mouseArea.containsMouse
     property alias font: label.font
     property alias labelRendering: label.renderType
@@ -89,6 +89,7 @@ Item {
         }
         width: iconSize
         height: iconSize
+        source: iconSource.indexOf("/") !== -1 ? Qt.resolvedUrl("../" + iconSource) : iconSource
         color: Kirigami.Theme.textColor
     }
 
