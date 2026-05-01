@@ -17,13 +17,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import QtQuick 2.2
-
+import QtQuick 2.15
 import QtQuick.Layouts 1.1
-import QtQuick.Controls 1.1
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 3.0 as PlasmaComponents
+import org.kde.kirigami 2.20 as Kirigami
 
 Item {
     id: root
@@ -81,14 +79,14 @@ Item {
     ColumnLayout {
         id: prompts
         anchors.top: parent.verticalCenter
-        anchors.topMargin: units.gridUnit * 0.5
+        anchors.topMargin: Kirigami.Units.gridUnit * 0.5
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         PlasmaComponents.Label {
             id: notificationsLabel
-            font.pointSize: Math.max(fontSize + 1,theme.defaultFont.pointSize + 1)
-            Layout.maximumWidth: units.gridUnit * 16
+            font.pointSize: Math.max(fontSize + 1, Kirigami.Theme.defaultFont.pointSize + 1)
+            Layout.maximumWidth: Kirigami.Units.gridUnit * 16
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignHCenter
@@ -97,8 +95,8 @@ Item {
         }
         ColumnLayout {
             Layout.minimumHeight: implicitHeight
-            Layout.maximumHeight: units.gridUnit * 10
-            Layout.maximumWidth: units.gridUnit * 16
+            Layout.maximumHeight: Kirigami.Units.gridUnit * 10
+            Layout.maximumWidth: Kirigami.Units.gridUnit * 16
             Layout.alignment: Qt.AlignHCenter
             ColumnLayout {
                 id: innerLayout
@@ -111,7 +109,7 @@ Item {
         }
         Row { //deliberately not rowlayout as I'm not trying to resize child items
             id: actionItemsLayout
-            spacing: units.largeSpacing / 2
+            spacing: Kirigami.Units.largeSpacing / 2
             Layout.alignment: Qt.AlignHCenter
         }
         Item {

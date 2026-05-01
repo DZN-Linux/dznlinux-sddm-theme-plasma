@@ -17,26 +17,18 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
-import QtQuick 2.6
-import QtQuick.Controls 1.1
-import QtQuick.Layouts 1.1
-import QtGraphicalEffects 1.0
-
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
-
-import org.kde.plasma.private.sessions 2.0
-import "../components"
+import QtQuick
+import QtQuick.Effects
+import org.kde.kirigami as Kirigami
 
 Item {
     id: wallpaperFader
     property Item clock
     property Item mainStack
     property Item footer
-    property alias source: wallpaperBlur.source
-    state: lockScreenRoot.uiVisible ? "on" : "off"
+    property alias source: wallpaperEffect.source
     property real factor: 0
-    readonly property bool lightBackground: Math.max(PlasmaCore.ColorScope.backgroundColor.r, PlasmaCore.ColorScope.backgroundColor.g, PlasmaCore.ColorScope.backgroundColor.b) > 0.5
+    readonly property bool lightBackground: Math.max(Kirigami.Theme.backgroundColor.r, Kirigami.Theme.backgroundColor.g, Kirigami.Theme.backgroundColor.b) > 0.5
 
     Behavior on factor {
         NumberAnimation {
@@ -46,58 +38,19 @@ Item {
             easing.type: Easing.InOutQuad
         }
     }
-    FastBlur {
-        id: wallpaperBlur
+
+    // MultiEffect replaces FastBlur + ShaderEffect color matrix from Qt5
+    MultiEffect {
+        id: wallpaperEffect
         anchors.fill: parent
-        radius: 50 * wallpaperFader.factor
-    }
-    ShaderEffect {
-        id: wallpaperShader
-        anchors.fill: parent
-        supportsAtlasTextures: true
-        property var source: ShaderEffectSource {
-            sourceItem: wallpaperBlur
-            live: true
-            hideSource: true
-            textureMirroring: ShaderEffectSource.NoMirroring
-        }
 
-        readonly property real contrast: 0.65 * wallpaperFader.factor + (1 - wallpaperFader.factor)
-        readonly property real saturation: 1.6 * wallpaperFader.factor + (1 - wallpaperFader.factor)
-        readonly property real intensity: (wallpaperFader.lightBackground ? 1.7 : 0.6) * wallpaperFader.factor + (1 - wallpaperFader.factor)
+        blurEnabled: true
+        blur: wallpaperFader.factor * 1.0
+        blurMax: 64
 
-        readonly property real transl: (1.0 - contrast) / 2.0;
-        readonly property real rval: (1.0 - saturation) * 0.2126;
-        readonly property real gval: (1.0 - saturation) * 0.7152;
-        readonly property real bval: (1.0 - saturation) * 0.0722;
-
-        property var colorMatrix: Qt.matrix4x4(
-            contrast, 0,        0,        0.0,
-            0,        contrast, 0,        0.0,
-            0,        0,        contrast, 0.0,
-            transl,   transl,   transl,   1.0).times(Qt.matrix4x4(
-                rval + saturation, rval,     rval,     0.0,
-                gval,     gval + saturation, gval,     0.0,
-                bval,     bval,     bval + saturation, 0.0,
-                0,        0,        0,        1.0)).times(Qt.matrix4x4(
-                    intensity, 0,         0,         0,
-                    0,         intensity, 0,         0,
-                    0,         0,         intensity, 0,
-                    0,         0,         0,         1
-                ));
-    
-
-        fragmentShader: "
-            uniform mediump mat4 colorMatrix;
-            uniform mediump sampler2D source;
-            varying mediump vec2 qt_TexCoord0;
-            uniform lowp float qt_Opacity;
-
-            void main(void)
-            {
-                mediump vec4 tex = texture2D(source, qt_TexCoord0);
-                gl_FragColor = tex * colorMatrix * qt_Opacity;
-            }"
+        saturation: wallpaperFader.factor * 0.6
+        brightness: (wallpaperFader.lightBackground ? 0.35 : -0.2) * wallpaperFader.factor
+        contrast: wallpaperFader.factor * -0.2
     }
 
     states: [
@@ -149,13 +102,13 @@ Item {
                 NumberAnimation {
                     target: mainStack
                     property: "opacity"
-                    duration: units.longDuration
+                    duration: Kirigami.Units.longDuration
                     easing.type: Easing.InOutQuad
                 }
                 NumberAnimation {
                     target: footer
                     property: "opacity"
-                    duration: units.longDuration
+                    duration: Kirigami.Units.longDuration
                     easing.type: Easing.InOutQuad
                 }
             }

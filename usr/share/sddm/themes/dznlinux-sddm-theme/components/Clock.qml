@@ -17,34 +17,35 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import QtQuick 2.8
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 1.1
-import org.kde.plasma.core 2.0
+import QtQuick
+import QtQuick.Layouts
+
+import org.kde.plasma.clock as PlasmaClock
+import org.kde.plasma.components as PlasmaComponents3
+import org.kde.kirigami as Kirigami
 
 ColumnLayout {
     readonly property bool softwareRendering: GraphicsInfo.api === GraphicsInfo.Software
 
-    Label {
-        text: Qt.formatTime(timeSource.data["Local"]["DateTime"])
-        color: ColorScope.textColor
+    PlasmaComponents3.Label {
+        text: Qt.formatTime(timeSource.dateTime)
+        color: Kirigami.Theme.textColor
         style: softwareRendering ? Text.Outline : Text.Normal
-        styleColor: softwareRendering ? ColorScope.backgroundColor : "transparent" //no outline, doesn't matter
+        styleColor: softwareRendering ? Kirigami.Theme.backgroundColor : "transparent"
         font.pointSize: 48
         Layout.alignment: Qt.AlignHCenter
     }
-    Label {
-        text: Qt.formatDate(timeSource.data["Local"]["DateTime"], Qt.DefaultLocaleLongDate)
-        color: ColorScope.textColor
+    PlasmaComponents3.Label {
+        text: Qt.formatDate(timeSource.dateTime, Qt.DefaultLocaleLongDate)
+        color: Kirigami.Theme.textColor
         style: softwareRendering ? Text.Outline : Text.Normal
-        styleColor: softwareRendering ? ColorScope.backgroundColor : "transparent" //no outline, doesn't matter
+        styleColor: softwareRendering ? Kirigami.Theme.backgroundColor : "transparent"
         font.pointSize: 24
         Layout.alignment: Qt.AlignHCenter
     }
-    DataSource {
+
+    PlasmaClock.Clock {
         id: timeSource
-        engine: "time"
-        connectedSources: ["Local"]
-        interval: 1000
+        trackSeconds: true
     }
 }

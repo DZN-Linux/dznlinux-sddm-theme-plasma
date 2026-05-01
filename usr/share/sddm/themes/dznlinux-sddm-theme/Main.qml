@@ -17,26 +17,26 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import QtQuick 2.8
-
+import QtQuick 2.15
 import QtQuick.Layouts 1.1
-import QtQuick.Controls 1.1
-import QtGraphicalEffects 1.0
+import QtQuick.Controls 2.15 as QQC2
+import Qt5Compat.GraphicalEffects
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.extras 2.0 as PlasmaExtras
+import org.kde.plasma.components as PlasmaComponents
+import org.kde.kirigami as Kirigami
+import org.kde.plasma.private.keyboardindicator as KeyboardIndicator
 
 import "components"
 
-PlasmaCore.ColorScope {
+Item {
     id: root
 
     // If we're using software rendering, draw outlines instead of shadows
     // See https://bugs.kde.org/show_bug.cgi?id=398317
     readonly property bool softwareRendering: GraphicsInfo.api === GraphicsInfo.Software
 
-    colorGroup: PlasmaCore.Theme.ComplementaryColorGroup
+    Kirigami.Theme.colorSet: Kirigami.Theme.Complementary
+    Kirigami.Theme.inherit: false
 
     width: 1600
     height: 900
@@ -46,10 +46,9 @@ PlasmaCore.ColorScope {
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
-    PlasmaCore.DataSource {
-        id: keystateSource
-        engine: "keystate"
-        connectedSources: "Caps Lock"
+    KeyboardIndicator.KeyState {
+        id: capsLockState
+        key: Qt.Key_CapsLock
     }
 
     Item {
@@ -148,13 +147,13 @@ PlasmaCore.ColorScope {
         }
 
 
-        StackView {
+        QQC2.StackView {
             id: mainStack
             anchors {
                 left: parent.left
                 right: parent.right
             }
-            height: root.height + units.gridUnit * 3
+            height: root.height + Kirigami.Units.gridUnit * 3
 
             focus: true //StackView is an implicit focus scope, so we need to give this focus so the item inside will have it
 
@@ -174,9 +173,9 @@ PlasmaCore.ColorScope {
             userListModel: userModel
             userListCurrentIndex: userModel.lastIndex >= 0 ? userModel.lastIndex : 0
             lastUserName: userModel.lastUser
-            
+
             usernameFontSize: config.fontSize
-            usernameFontColor: root.textColor
+            usernameFontColor: Kirigami.Theme.textColor
 
             showUserList: {
                 if ( !userListModel.hasOwnProperty("count")
@@ -190,7 +189,7 @@ PlasmaCore.ColorScope {
 
             notificationMessage: {
                 var text = ""
-                if (keystateSource.data["Caps Lock"]["Locked"]) {
+                if (capsLockState.locked) {
                     text += i18nd("plasma_lookandfeel_org.kde.lookandfeel","Caps Lock is on")
                     if (root.notificationMessage) {
                         text += " • "
@@ -238,7 +237,7 @@ PlasmaCore.ColorScope {
 
             Behavior on opacity {
                 OpacityAnimator {
-                    duration: units.longDuration
+                    duration: Kirigami.Units.longDuration
                 }
             }
         }
@@ -305,18 +304,18 @@ PlasmaCore.ColorScope {
                             NumberAnimation {
                                 target: mainStack
                                 property: "y"
-                                duration: units.longDuration
+                                duration: Kirigami.Units.longDuration
                                 easing.type: Easing.InOutQuad
                             }
                             NumberAnimation {
                                 target: inputPanel
                                 property: "y"
-                                duration: units.longDuration
+                                duration: Kirigami.Units.longDuration
                                 easing.type: Easing.OutQuad
                             }
                             OpacityAnimator {
                                 target: inputPanel
-                                duration: units.longDuration
+                                duration: Kirigami.Units.longDuration
                                 easing.type: Easing.OutQuad
                             }
                         }
@@ -330,18 +329,18 @@ PlasmaCore.ColorScope {
                             NumberAnimation {
                                 target: mainStack
                                 property: "y"
-                                duration: units.longDuration
+                                duration: Kirigami.Units.longDuration
                                 easing.type: Easing.InOutQuad
                             }
                             NumberAnimation {
                                 target: inputPanel
                                 property: "y"
-                                duration: units.longDuration
+                                duration: Kirigami.Units.longDuration
                                 easing.type: Easing.InQuad
                             }
                             OpacityAnimator {
                                 target: inputPanel
-                                duration: units.longDuration
+                                duration: Kirigami.Units.longDuration
                                 easing.type: Easing.InQuad
                             }
                         }
@@ -418,19 +417,19 @@ PlasmaCore.ColorScope {
                 bottom: parent.bottom
                 left: parent.left
                 right: parent.right
-                margins: units.smallSpacing
+                margins: Kirigami.Units.smallSpacing
             }
 
             Behavior on opacity {
                 OpacityAnimator {
-                    duration: units.longDuration
+                    duration: Kirigami.Units.longDuration
                 }
             }
 
             PlasmaComponents.ToolButton {
                 text: i18ndc("plasma_lookandfeel_org.kde.lookandfeel", "Button to show/hide virtual keyboard", "Virtual Keyboard")
                 font.pointSize: config.fontSize
-                iconName: inputPanel.keyboardActive ? "input-keyboard-virtual-on" : "input-keyboard-virtual-off"
+                icon.name: inputPanel.keyboardActive ? "input-keyboard-virtual-on" : "input-keyboard-virtual-off"
                 onClicked: inputPanel.showHide()
                 visible: inputPanel.status == Loader.Ready
             }
@@ -452,13 +451,13 @@ PlasmaCore.ColorScope {
 
     Connections {
         target: sddm
-        onLoginFailed: {
+        function onLoginFailed() {
             notificationMessage = i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Login Failed")
             footer.enabled = true
             mainStack.enabled = true
             userListComponent.userList.opacity = 1
         }
-        onLoginSucceeded: {
+        function onLoginSucceeded() {
             //note SDDM will kill the greeter at some random point after this
             //there is no certainty any transition will finish, it depends on the time it
             //takes to complete the init

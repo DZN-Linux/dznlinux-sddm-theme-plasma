@@ -17,10 +17,10 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-import QtQuick 2.1
-import QtQuick.Controls 1.1 as QQC
+import QtQuick 2.15
 
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 3.0 as PlasmaComponents
+import org.kde.kirigami 2.20 as Kirigami
 
 import org.kde.plasma.workspace.keyboardlayout 1.0
 
@@ -30,10 +30,10 @@ PlasmaComponents.ToolButton {
 
     id: kbLayoutButton
 
-    iconName: "input-keyboard"
-    implicitWidth: minimumWidth
+    icon.name: "input-keyboard"
+    implicitWidth: implicitContentWidth + leftPadding + rightPadding
     text: layout.currentLayoutDisplayName
-    font.pointSize: Math.max(fontSize,theme.defaultFont.pointSize)
+    font.pointSize: Math.max(fontSize, Kirigami.Theme.defaultFont.pointSize)
 
     Accessible.name: i18ndc("plasma_lookandfeel_org.kde.lookandfeel", "Button to change keyboard layout", "Switch layout")
 

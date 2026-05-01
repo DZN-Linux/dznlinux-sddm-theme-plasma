@@ -17,37 +17,37 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import QtQuick 2.2
+import QtQuick
+import QtQuick.Layouts
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.workspace.components 2.0 as PW
+import org.kde.plasma.components as PlasmaComponents3
+import org.kde.plasma.workspace.components as PW
+import org.kde.plasma.private.battery
+import org.kde.kirigami as Kirigami
 
-Row {
-    spacing: units.smallSpacing
-    visible: pmSource.data["Battery"]["Has Cumulative"]
+RowLayout {
+    spacing: Kirigami.Units.smallSpacing
+    visible: batteryControl.hasInternalBatteries
 
-    PlasmaCore.DataSource {
-        id: pmSource
-        engine: "powermanagement"
-        connectedSources: ["Battery", "AC Adapter"]
+    BatteryControlModel {
+        id: batteryControl
     }
 
     PW.BatteryIcon {
-        id: battery
-        hasBattery: pmSource.data["Battery"]["Has Battery"] || false
-        percent: pmSource.data["Battery"]["Percent"] || 0
-        pluggedIn: pmSource.data["AC Adapter"] ? pmSource.data["AC Adapter"]["Plugged in"] : false
+        pluggedIn: batteryControl.pluggedIn
+        hasBattery: batteryControl.hasCumulative
+        percent: batteryControl.percent
 
-        height: batteryLabel.height
-        width: height
+        Layout.preferredHeight: Math.max(Kirigami.Units.iconSizes.medium, batteryLabel.implicitHeight)
+        Layout.preferredWidth: Layout.preferredHeight
+        Layout.alignment: Qt.AlignVCenter
     }
 
-    PlasmaComponents.Label {
+    PlasmaComponents3.Label {
         id: batteryLabel
         font.pointSize: config.fontSize
-        height: undefined
-        text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","%1%", battery.percent)
-        Accessible.name: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Battery at %1%", battery.percent)
+        text: i18nd("plasma_lookandfeel_org.kde.lookandfeel", "%1%", batteryControl.percent)
+        Accessible.name: i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Battery at %1%", batteryControl.percent)
+        Layout.alignment: Qt.AlignVCenter
     }
 }
